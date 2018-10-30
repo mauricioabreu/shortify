@@ -1,6 +1,8 @@
 package main
 
 import (
+	"crypto/md5"
+	"encoding/hex"
 	"fmt"
 	"log"
 	"net/http"
@@ -8,9 +10,14 @@ import (
 	"github.com/gorilla/mux"
 )
 
+func slugify(url string) string {
+	hash := md5.New()
+	return hex.EncodeToString(hash.Sum([]byte(url)))[0:7]
+}
+
 func shortifyURL(url string) string {
 	redis := RedisClient()
-	shortenedURL := "abc012"
+	shortenedURL := slugify(url)
 	err := redis.Set(shortenedURL, url, 0).Err()
 	if err != nil {
 		panic(err)
@@ -25,7 +32,8 @@ func getURL(slug string) (string, error) {
 }
 
 func shortifyHandler(w http.ResponseWriter, r *http.Request) {
-	shortenedURL := shortifyURL("foo")
+	r.ParseForm()
+	shortenedURL := shortifyURL(r.Form.Get("url"))
 	log.Printf("Shortened URL: %s", shortenedURL)
 	fmt.Fprintf(w, shortenedURL)
 }
