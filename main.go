@@ -68,7 +68,7 @@ func shortifyHandler(w http.ResponseWriter, r *http.Request) {
 	}
 
 	log.Printf("Shortened URL: %s", shortenedURL)
-	w.Write([]byte(shortenedURL))
+	w.Write([]byte(baseURL + shortenedURL))
 }
 
 func getURLHandler(w http.ResponseWriter, r *http.Request) {
