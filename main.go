@@ -78,7 +78,7 @@ func getURL(slug string) (string, error) {
 	return shortenedURL, err
 }
 
-func shortifyHandler(w http.ResponseWriter, r *http.Request) {
+func shortifyURLHandler(w http.ResponseWriter, r *http.Request) {
 	r.ParseForm()
 	shortenedURL, err := shortifyURL(r.Form.Get("url"))
 	if err != nil {
@@ -130,6 +130,6 @@ func validateURL(value string) bool {
 func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/{slug}", getURLHandler)
-	router.HandleFunc("/", shortifyHandler)
+	router.HandleFunc("/", shortifyURLHandler)
 	log.Fatal(http.ListenAndServe(":8000", router))
 }
