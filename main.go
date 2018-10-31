@@ -1,7 +1,7 @@
 package main
 
 import (
-	"crypto/md5"
+	"crypto/rand"
 	"encoding/hex"
 	"errors"
 	"flag"
@@ -32,9 +32,23 @@ func init() {
 	flag.Parse()
 }
 
-func slugify(url string) string {
-	hash := md5.New()
-	return hex.EncodeToString(hash.Sum([]byte(url)))[0:7]
+func generateRandomBytes(n int) ([]byte, error) {
+	b := make([]byte, n)
+	_, err := rand.Read(b)
+	if err != nil {
+		return nil, err
+	}
+
+	return b, nil
+}
+
+// Generate a random slug. The final length of this function is twice size
+func slugify(url string, size int) string {
+	b, err := generateRandomBytes(size)
+	if err != nil {
+		panic(err)
+	}
+	return hex.EncodeToString(b)
 }
 
 func shortifyURL(url string) (string, error) {
@@ -44,7 +58,7 @@ func shortifyURL(url string) (string, error) {
 	}
 
 	redis := RedisClient()
-	shortenedURL := slugify(url)
+	shortenedURL := slugify(url, 5)
 	err = redis.Set(shortenedURL, url, 0).Err()
 	if err != nil {
 		panic(err)
