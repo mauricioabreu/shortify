@@ -4,11 +4,14 @@ package main
 import (
 	"bytes"
 	"io/ioutil"
+	"log"
 	"net/http"
 	"net/http/httptest"
 	"net/url"
 	"strings"
 	"testing"
+
+	"github.com/gorilla/mux"
 )
 
 func TestShortifyURL(t *testing.T) {
@@ -69,5 +72,30 @@ func TestShortifyInvalidURL(t *testing.T) {
 	body := string(bytes.TrimSpace(b))
 	if body != "Invalid URL" {
 		t.Errorf("Body content should be 'Invalid URL'. Got %v", body)
+	}
+}
+
+func TestGetURL(t *testing.T) {
+	redisPool := RedisClient()
+	err := redisPool.Set("foobar1234", "https://www.maugzoide.com/", 0).Err()
+	if err != nil {
+		log.Fatalf("Could not set a new key on store: %v", err)
+	}
+
+	req, err := http.NewRequest("GET", "localhost:8000/foobar1234", nil)
+	// Set a value for the slug path placeholder
+	// See https://godoc.org/github.com/gorilla/mux#SetURLVars for more information
+	req = mux.SetURLVars(req, map[string]string{"slug": "foobar1234"})
+	if err != nil {
+		t.Fatalf("Could not create HTTP request: %v", err)
+	}
+	recorder := httptest.NewRecorder()
+	getURLHandler(recorder, req)
+
+	result := recorder.Result()
+	defer result.Body.Close()
+
+	if result.StatusCode != http.StatusTemporaryRedirect {
+		t.Errorf("Expected HTTP %v, got %v", http.StatusTemporaryRedirect, result.StatusCode)
 	}
 }
