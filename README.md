@@ -6,7 +6,7 @@ URL shortener written in golang.
 
 ## What is it?
 
-It is an URL shortener. It is a service you can use to get your huge URL and make it short.
+It is an URL shortener. It is a service you can use to shorten your URLs. Similar to services like `bit.ly` and `bl.ink`.
 
 ## Why?
 
