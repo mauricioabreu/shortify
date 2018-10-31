@@ -3,12 +3,20 @@ package main
 import (
 	"crypto/md5"
 	"encoding/hex"
+	"flag"
 	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/gorilla/mux"
 )
+
+var baseURL string
+
+func init() {
+	flag.StringVar(&baseURL, "base_url", "http://localhost:8000/", "Base site URL")
+	flag.Parse()
+}
 
 func slugify(url string) string {
 	hash := md5.New()
@@ -40,14 +48,14 @@ func shortifyHandler(w http.ResponseWriter, r *http.Request) {
 
 func getURLHandler(w http.ResponseWriter, r *http.Request) {
 	params := mux.Vars(r)
-	shortenedURL, err := getURL(params["slug"])
-	if shortenedURL == "" {
+	url, err := getURL(params["slug"])
+	if url == "" {
 		w.WriteHeader(http.StatusNotFound)
 		return
 	} else if err != nil {
 		panic(err)
 	} else {
-		w.Header().Add("Location", shortenedURL)
+		w.Header().Add("Location", url)
 		w.WriteHeader(http.StatusTemporaryRedirect)
 	}
 }
