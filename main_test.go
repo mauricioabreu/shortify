@@ -99,3 +99,22 @@ func TestGetURL(t *testing.T) {
 		t.Errorf("Expected HTTP %v, got %v", http.StatusTemporaryRedirect, result.StatusCode)
 	}
 }
+
+func TestGetURLNotFound(t *testing.T) {
+	req, err := http.NewRequest("GET", "localhost:8000/foobar1234", nil)
+	// Set a value for the slug path placeholder
+	// See https://godoc.org/github.com/gorilla/mux#SetURLVars for more information
+	req = mux.SetURLVars(req, map[string]string{"slug": "foo"})
+	if err != nil {
+		t.Fatalf("Could not create HTTP request: %v", err)
+	}
+	recorder := httptest.NewRecorder()
+	getURLHandler(recorder, req)
+
+	result := recorder.Result()
+	defer result.Body.Close()
+
+	if result.StatusCode != http.StatusNotFound {
+		t.Errorf("Expected HTTP %v, got %v", http.StatusNotFound, result.StatusCode)
+	}
+}
