@@ -37,5 +37,5 @@ curl -sv http://localhost:8000/ -XPOST -d "url=https://www.maugzoide.com/"
 Retrieving the URL:
 
 ```
-curl -sv http://localhost:8000/6874747 -XGET
+curl -sv http://localhost:8000/d41d8cd -XGET
 ```
