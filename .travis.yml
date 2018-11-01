@@ -1,0 +1,10 @@
+language: go
+
+go:
+  - 1.10.x
+
+services:
+  - redis-server
+
+script:
+  - go test -v ./...
