@@ -1,4 +1,4 @@
-# shortify
+# shortify [![Build Status](https://travis-ci.org/mauricioabreu/shortify.svg?branch=master)](https://travis-ci.org/mauricioabreu/shortify)
 
 URL shortener written in golang.
 
