@@ -28,6 +28,7 @@ const (
 )
 
 var baseURL string
+var port string
 var rgxURL *regexp.Regexp
 var redisPool *redis.Client
 
@@ -35,6 +36,7 @@ func init() {
 	redisPool = RedisClient()
 	rgxURL = regexp.MustCompile(URL)
 	flag.StringVar(&baseURL, "base_url", "http://localhost:8000/", "Base site URL")
+	flag.StringVar(&port, "port", "8000", "HTTP server port")
 	flag.Parse()
 }
 
@@ -129,5 +131,5 @@ func main() {
 	router := mux.NewRouter()
 	router.HandleFunc("/{slug}", getURLHandler)
 	router.HandleFunc("/", shortifyURLHandler)
-	log.Fatal(http.ListenAndServe(":8000", router))
+	log.Fatal(http.ListenAndServe(":"+port, router))
 }
