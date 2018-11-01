@@ -51,6 +51,12 @@ What are we going to measure:
 * **Latency** - how fast a server responds to the requests in the load test. HTTP requests are a bit 
 * **Throughput** - how many requests the server can succesfully respond in a specific interval.
 
+Computer specs for this benchmark:
+
+* Intel Core i7, 2.2 GHz
+* 6 GB ram
+* Ubuntu 16.04 (xenial)
+
 ### First test (low number of requests, high concurrency):
 
 Requests: 1000
