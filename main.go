@@ -63,7 +63,6 @@ func shortifyURL(url string) (string, error) {
 		return "", err
 	}
 
-	redisPool := RedisClient()
 	shortenedURL := slugify(url, 5)
 	err = redisPool.Set(shortenedURL, url, 0).Err()
 	if err != nil {
@@ -73,7 +72,6 @@ func shortifyURL(url string) (string, error) {
 }
 
 func getURL(slug string) (string, error) {
-	redisPool := RedisClient()
 	shortenedURL, err := redisPool.Get(slug).Result()
 	return shortenedURL, err
 }
