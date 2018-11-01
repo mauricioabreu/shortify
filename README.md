@@ -93,7 +93,7 @@ Average:      0.0024 secs
 
 Requests/sec: 19897.3339
 
-### Third test (high number of request, high concurrency):
+### Third test (high number of requests, high concurrency):
 
 Requests: 100000
 Concurrency: 500
