@@ -18,6 +18,12 @@ I want this project to be:
 * Deployable
 * Debuggable
 
+## Installation
+
+```
+go get -u github.com/mauricioabreu/shortify
+```
+
 ## Using
 
 There is support for docker-compose:
@@ -26,7 +32,11 @@ There is support for docker-compose:
 docker-compose up
 ```
 
-Now you can run the server and use the service.
+Now you can run the server and use the service:
+
+```
+shortify
+```
 
 Shortening an URL:
 
@@ -38,6 +48,12 @@ Retrieving the URL:
 
 ```
 curl -sv http://localhost:8000/d41d8cda2f -XGET
+```
+
+## Testing
+
+```
+go test -v ./...
 ```
 
 ## Benchmark
